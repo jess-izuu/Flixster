@@ -15,6 +15,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.codepath.flixster.DetailActivity;
 import com.codepath.flixster.R;
 import com.codepath.flixster.models.Movie;
@@ -77,6 +80,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
             tvTitle.setText(movie.getTitle());
             tvOverview.setText(movie.getOverview());
             String imageUrl;
+            //int radius = 30; // corner radius, higher value = more rounded
+            //int margin = 10; // crop margin, set to 0 for corners with no crop
+
             // if phone is in landscape
             if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
                 // then imageUrl = back drop image
@@ -85,7 +91,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
                 // else imageUrl = poster image
                 imageUrl = movie.getPosterPath();
             }
-            Glide.with(context).load(imageUrl).into(ivPoster);
+            //Glide.with(context).load(imageUrl).into(ivPoster);
+            RequestOptions requestOptions = new RequestOptions();
+            requestOptions = requestOptions.transforms(new CenterCrop(), new RoundedCorners(30));
+            Glide.with(context).load(imageUrl).apply(requestOptions).into(ivPoster);
 
             // 1. Register click listener on the whole row
             container.setOnClickListener(new View.OnClickListener() {
